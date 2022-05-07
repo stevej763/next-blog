@@ -1,0 +1,76 @@
+.markdown {
+  @apply text-lg leading-relaxed;
+}
+
+.markdown p,
+.markdown ul,
+.markdown ol,
+.markdown blockquote {
+  @apply my-6;
+}
+
+.markdown ol {
+  list-style: decimal;
+}
+
+.markdown ul {
+  list-style: disc;
+}
+
+.markdown ul {
+  list-style: none;
+}
+
+.markdown table {
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+.markdown table caption {
+  font-size: 1.5em;
+  margin: .5em 0 .75em;
+}
+
+.markdown table tr {
+  background-color: #f8f8f8;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: .35em;
+}
+
+.markdown table th,
+.markdown table td {
+  padding: .625em;
+  text-align: center;
+}
+
+.markdown table th {
+  font-size: .85em;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.markdown a {
+  color: rgb(2, 108, 222);
+}
+
+.markdown a:hover {
+  text-decoration: underline;
+}
+
+.markdown a:visited {
+  color: rgb(108, 108, 108);
+}
+
+.markdown h2 {
+  @apply text-3xl mt-12 mb-4 leading-snug;
+}
+
+.markdown h3 {
+  @apply text-2xl mt-8 mb-4 leading-snug;
+}
