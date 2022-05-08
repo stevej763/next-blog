@@ -6,7 +6,7 @@ import Intro from "../../components/pageComponents/intro";
 import HeroPost from "../../components/post/hero-post";
 import PostPreviewGrid from "../../components/pageComponents/post-preview-grid";
 
-export default function Home({ allPosts }) {
+export default function Blog({ allPosts }) {
   const heroPost = allPosts[0];
   const morePosts = allPosts.slice(1);
   return (
@@ -28,7 +28,9 @@ export default function Home({ allPosts }) {
               category={heroPost.category}
             />
           )}
-          {morePosts.length > 0 && <PostPreviewGrid posts={morePosts} />}
+          {morePosts.length > 0 && (
+            <PostPreviewGrid posts={morePosts} heading="More Articles" />
+          )}
         </Container>
       </Layout>
     </>

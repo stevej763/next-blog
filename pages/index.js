@@ -19,7 +19,7 @@ export default function Home({ allPosts }) {
           <Intro />
           <About />
           <SectionSeparator />
-          {<PostPreviewGrid posts={latestPosts} />}
+          {<PostPreviewGrid posts={latestPosts} heading="Latest Posts" />}
         </Container>
       </Layout>
     </>

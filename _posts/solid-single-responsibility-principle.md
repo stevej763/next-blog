@@ -1,6 +1,6 @@
 ---
 title: "SOLID - The single responsibility principle"
-excerpt: "In the first of 5 posts, we take a look at the the first of the five SOLID principles - the single responsibility principle"
+excerpt: "In the first of a series of 5, we take a look at the the first of the five SOLID principles - the single responsibility principle"
 coverImage: "/assets/blog/solid-srp/cover.jpg"
 date: "2022-05-08"
 category: "OOP"
@@ -84,21 +84,21 @@ The service, while having very little complex logic of its own, orchestrates the
 Finally, lets take a look and how a test might look for the service class.
 
 ```
-    @Test
-    public void savesTextToDatabase() {
-        UserInputDao userInputDao = mock(UserInputDao.class);
-        TextSanitiser textSanitiser = mock(TextSanitiser.class);
-        String userInput = "Test";
-        String sanitisedText = "sanitised";
+@Test
+public void savesTextToDatabase() {
+    UserInputDao userInputDao = mock(UserInputDao.class);
+    TextSanitiser textSanitiser = mock(TextSanitiser.class);
+    String userInput = "Test";
+    String sanitisedText = "sanitised";
 
-        UserInputService underTest = new UserInputService(textSanitiser, userInputDao);
+    UserInputService underTest = new UserInputService(textSanitiser, userInputDao);
 
-        when(textSanitiser.sanitise(userInput)).thenReturn(sanitisedText);
-        underTest.storeSanitisedText(userInput);
+    when(textSanitiser.sanitise(userInput)).thenReturn(sanitisedText);
+    underTest.storeSanitisedText(userInput);
 
-        verify(textSanitiser).sanitise(userInput);
-        verify(userInputDao).save(sanitisedText);
-    }
+    verify(textSanitiser).sanitise(userInput);
+    verify(userInputDao).save(sanitisedText);
+}
 ```
 
 First we set up the mocks for the `UserInputDao` and `TextSanitiser`. Then a couple of String variables that we will pass in to the class being tested. We then instantiate a new instance of the service class, passing in the two mocked dependencies as parameters for the constructor, these take the place of the real objects, allowing us to manipulate their behaviour.
