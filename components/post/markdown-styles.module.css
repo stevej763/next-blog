@@ -65,6 +65,20 @@
   color: rgb(108, 108, 108);
 }
 
+.markdown code {
+  color: coral
+}
+
+.markdown pre {
+  padding: 10px;
+  background-color: rgb(58, 58, 58);
+  overflow: auto; 
+}
+
+.markdown pre code {
+  color: white
+}
+
 .markdown h2 {
   @apply text-3xl mt-12 mb-4 leading-snug;
 }
