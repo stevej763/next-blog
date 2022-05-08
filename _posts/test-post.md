@@ -1,5 +1,5 @@
 ---
-title: ""
+title: "Test post"
 excerpt: "Here I will be testing my approach to building a statically generated site using NextJs and markdown"
 coverImage: "/assets/blog/test-post/cover.jpeg"
 date: "2022-05-07"
