@@ -11,7 +11,7 @@ ogImage:
   url: "/assets/blog/solid-srp/cover.jpg"
 ---
 
-The SOLID principles are nothing new. Introduced by Uncle Bob back in 2000, there are more articles than I can count out there on the topic, not to mention the books by the man himself. However, every post brings a different perspective and it seemed like a good place to start for a series of posts on this website. For this article, I am going to begin with the first of the five principles - The Single Responsibility Principle
+The SOLID principles are nothing new. Introduced by Uncle Bob back in 2000, there are more articles than I can count out there on the topic, not to mention the books by the man himself. However, every post brings a different perspective and it seemed like a good place to start for a series of posts on this website. For this article, I am going to begin with the first of the five principles - The Single Responsibility Principle.
 
 ## Overview
 
@@ -27,7 +27,7 @@ If both responsibilities were handled in the same class, things would get over-c
 
 ### Testing
 
-A big benefit of following SRP if you are a fan of test-driven-development as I am, is the fact that each class has far less logic to test. If a class only has one responsibility, you have then removed all the other variables from your test cases, meaning fewer tests are needed and the tests themselves will be much simpler. It also allows your unit tests to use mocked dependencies, which you can verify are called upon in the right scenarios. By stubbing responses from these mocked dependencies you can also make sure you are purely tests the unit-level logic of the class you are working on. The tests will never fail because of a bug in an external class.
+A big benefit of following SRP if you are a fan of test-driven-development as I am, is the fact that each class has far less logic to test. If a class only has one responsibility, you have then removed all the other variables from your test cases, meaning fewer tests are needed and the tests themselves will be much simpler. It also allows your unit tests to use mocked dependencies, which you can verify are called upon in the right scenarios. By stubbing responses from these mocked dependencies you can also make sure you are purely testing the unit-level behaviour of the class you are working on. The tests will never fail because of a bug in an external class.
 
 ### Decoupling
 
@@ -39,7 +39,7 @@ Structuring your codebase may not seem like a top priority in a small personal p
 
 ## Example
 
-The best way I find of really beginning to understand these concepts is with a coded example. What follows is a very simple implementation of the single responsibility principle at work. Imagine we have a application that needs to handle some user input, in this case through the command-line, but the concept would work the same way if it was from an HTTP request, messaging service or any other form of client. Here we have a class called `CommandLineInputHandler`. This class receives some input in the form of a string, and the end goal is to have this text saved to a database somewhere after it has been sanitised, such as trailing spaces or non-standard characters and removed, maybe even something to prevent Remote Code Execution (RCE).
+The best way I find of really beginning to understand these concepts is with a coded example. What follows is a very simple implementation of the single responsibility principle at work. Imagine we have an application that needs to handle some user input, in this case through the command-line, but the concept would work the same way if it was from an HTTP request, messaging service or any other form of client. Here we have a class called `CommandLineInputHandler`. This class receives some input in the form of a string, and the end goal is to have this text saved to a database somewhere after it has been sanitised, such as removing trailing spaces, non-standard characters or checking for an attempt at Remote Code Execution (RCE).
 
 ```
 public class CommandLineInputHandler implements InputHandler {
@@ -57,9 +57,9 @@ public class CommandLineInputHandler implements InputHandler {
 }
 ```
 
-Following the single responsibility principle, the `InputHandler` does one thing. It passes the string of text onto a `UserInputService`. Exactly what this service does, the `CommandLineInputhandler` does not know or care, it does one job, receives the input, and pass it onto the service.
+Following the single responsibility principle, the `InputHandler` does one thing. It passes the string of text onto a `UserInputService`. Exactly what this service does, the `CommandLineInputHandler` does not know or care, it does one job, receives the input, and passes it onto the service.
 
-Following on from this we can see what the `UserInputService` is doing with the text. It has two dependencies, `TextSanitiser` and `UserInputDao`.
+Next, we can see what the `UserInputService` is doing with the text. It has two dependencies, `TextSanitiser` and `UserInputDao`.
 
 ```
 public class UserInputService {
@@ -79,15 +79,43 @@ public class UserInputService {
 }
 ```
 
-Our service, while having very little complex logic of its own, orchestrates the storage of the text. It requests for the text to be sanitised by the `TextSanitiser`, how this is managed it does not know, but it knows it will receive a string back from the `TextSanitiser`. It then calls the `save()` method on the `UserInputDao` to have the data inserted into the database. Which kind of database the service does not know or care as that is not it's responsibility.
+The service, while having very little complex logic of its own, orchestrates the storage of the text. It requests for the text to be sanitised by the `TextSanitiser`, how this is managed it does not know, but it knows it will receive a string back from the `TextSanitiser`. It then calls the `save()` method on the `UserInputDao` to have the data inserted into the database. Which kind of database the service does not know or care as that is not it's responsibility.
+
+Finally, lets take a look and how a test might look for the service class.
+
+```
+    @Test
+    public void savesTextToDatabase() {
+        UserInputDao userInputDao = mock(UserInputDao.class);
+        TextSanitiser textSanitiser = mock(TextSanitiser.class);
+        String userInput = "Test";
+        String sanitisedText = "sanitised";
+
+        UserInputService underTest = new UserInputService(textSanitiser, userInputDao);
+
+        when(textSanitiser.sanitise(userInput)).thenReturn(sanitisedText);
+        underTest.storeSanitisedText(userInput);
+
+        verify(textSanitiser).sanitise(userInput);
+        verify(userInputDao).save(sanitisedText);
+    }
+```
+
+First we set up the mocks for the `UserInputDao` and `TextSanitiser`. Then a couple of String variables that we will pass in to the class being tested. We then instantiate a new instance of the service class, passing in the two mocked dependencies as parameters for the constructor, these take the place of the real objects, allowing us to manipulate their behaviour.
+
+Before calling the method we wish to test, we stub a response from the `TextSanitiser` telling the mock that if it is passed the `userInput` variable then we want it to return a different string, the `sanitisedText` variable.
+
+For the assertions all we have to do is verify the correct methods on the two dependencies have been called with the correct parameters. First that the `TextSanitiser` was asked to sanitise the user input, then that the `UserInputDao` was called upon to save the sanitised text to the database. If both those things have happened, then the service fulfilled its role and the test will pass.
+
+Because of the way the code was split up and structured, each segment of expected behaviour can be tested individually. Had we crammed the responsibility of all of the classes into one, the unit tests would need to handle a multitude of functionality. Receiving the user input, sanitising the text and saving it to the database. This would inevitably make the tests much longer and giving a higher chance of an edge case being missed. As it stands, without even implementing the DAO or Sanitiser logic I was able to write a passing test for the UserInputService. If the internal logic of the methods changed, as long as the output was still the same, everything would continue to work together nicely.
 
 ## Recap
 
 - Each class should only have one responsibilty (Do one thing)
 - There should only ever be one reason for a class to change
 - Decoupling your classes will reduce dependencies
-- Organise and name classes (and methods) approprietly
-- Testing will be much easier
+- Organise and name classes (and methods) appropriately
+- Testing will be much easier when a class has a single responsibility
 
 ### References:
 
