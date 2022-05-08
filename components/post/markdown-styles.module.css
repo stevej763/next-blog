@@ -10,11 +10,13 @@
 }
 
 .markdown ol {
-  list-style: decimal;
+  list-style: inside;
+  list-style-type: decimal;
 }
 
 .markdown ul {
-  list-style: disc;
+  list-style: inside;
+
 }
 
 .markdown table {

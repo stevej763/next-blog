@@ -1,4 +1,5 @@
-import { SITE_TITLE } from "../lib/constants";
+import { SITE_TITLE } from "../../lib/constants";
+import Link from "next/link";
 
 export default function Intro() {
   return (
@@ -7,7 +8,13 @@ export default function Intro() {
         {SITE_TITLE}
       </h1>
       <h4 className="text-center md:text-left text-lg mt-5 md:pl-8">
-        Software Engineer
+        <Link href="/">
+          <a className="hover:underline">Home</a>
+        </Link>
+        {" | "}
+        <Link href="/blog">
+          <a className="hover:underline">Blog</a>
+        </Link>
       </h4>
     </section>
   );

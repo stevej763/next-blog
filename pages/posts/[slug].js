@@ -1,14 +1,14 @@
 import { useRouter } from "next/router";
 import ErrorPage from "next/error";
-import Container from "../../components/container";
-import PostBody from "../../components/post-body";
-import Header from "../../components/header";
-import PostHeader from "../../components/post-header";
-import Layout from "../../components/layout";
-import { getPostBySlug, getAllPosts } from "../../lib/api";
-import PostTitle from "../../components/post-title";
 import Head from "next/head";
+import { getPostBySlug, getAllPosts } from "../../lib/api";
 import markdownToHtml from "../../lib/markdownToHtml";
+import Container from "../../components/pageComponents/container";
+import PostHeader from "../../components/post/post-header";
+import Layout from "../../components/pageComponents/layout";
+import PostTitle from "../../components/post/post-title";
+import PostBody from "../../components/post/post-body";
+import Intro from "../../components/pageComponents/intro";
 
 export default function Post({ post }) {
   const router = useRouter();
@@ -18,7 +18,7 @@ export default function Post({ post }) {
   return (
     <Layout>
       <Container>
-        <Header />
+        <Intro />
         {router.isFallback ? (
           <PostTitle>Loading…</PostTitle>
         ) : (

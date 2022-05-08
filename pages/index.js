@@ -1,14 +1,14 @@
-import Container from "../components/container";
-import MoreStories from "../components/more-stories";
-import HeroPost from "../components/hero-post";
-import Intro from "../components/intro";
-import Layout from "../components/layout";
+import Container from "../components/pageComponents/container";
+import About from "../components/about/about";
+import PostPreviewGrid from "../components/pageComponents/post-preview-grid";
+import Intro from "../components/pageComponents/intro";
+import Layout from "../components/pageComponents/layout";
 import { getAllPosts } from "../lib/api";
 import Head from "next/head";
+import SectionSeparator from "../components/section-separator";
 
-export default function Index({ allPosts }) {
-  const heroPost = allPosts[0];
-  const morePosts = allPosts.slice(1);
+export default function Home({ allPosts }) {
+  const latestPosts = allPosts.slice(0, 2);
   return (
     <>
       <Layout>
@@ -17,17 +17,9 @@ export default function Index({ allPosts }) {
         </Head>
         <Container>
           <Intro />
-          {heroPost && (
-            <HeroPost
-              title={heroPost.title}
-              coverImage={heroPost.coverImage}
-              date={heroPost.date}
-              author={heroPost.author}
-              slug={heroPost.slug}
-              excerpt={heroPost.excerpt}
-            />
-          )}
-          {morePosts.length > 0 && <MoreStories posts={morePosts} />}
+          <About />
+          <SectionSeparator />
+          {<PostPreviewGrid posts={latestPosts} />}
         </Container>
       </Layout>
     </>

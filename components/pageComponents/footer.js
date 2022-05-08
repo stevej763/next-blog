@@ -1,5 +1,5 @@
 import Container from "./container";
-import { GITHUB_LINK } from "../lib/constants";
+import { GITHUB_LINK } from "../../lib/constants";
 
 export default function Footer() {
   return (

@@ -1,7 +1,7 @@
-import Avatar from '../components/avatar'
-import DateFormatter from '../components/date-formatter'
-import CoverImage from '../components/cover-image'
-import Link from 'next/link'
+import Link from "next/link";
+import Avatar from "./avatar";
+import CoverImage from "./cover-image";
+import DateFormatter from "./date-formatter";
 
 export default function HeroPost({
   title,
@@ -10,6 +10,7 @@ export default function HeroPost({
   excerpt,
   author,
   slug,
+  category,
 }) {
   return (
     <section>
@@ -18,8 +19,8 @@ export default function HeroPost({
           title={title}
           src={coverImage}
           slug={slug}
-          height={620}
-          width={1240}
+          height={1340}
+          width={1920}
         />
       </div>
       <div className="md:grid md:grid-cols-2 md:gap-x-16 lg:gap-x-8 mb-20 md:mb-28">
@@ -30,7 +31,10 @@ export default function HeroPost({
             </Link>
           </h3>
           <div className="mb-4 md:mb-0 text-lg">
-            <DateFormatter dateString={date} />
+            <p>
+              Posted: <DateFormatter dateString={date} />
+            </p>
+            <p>Category: {category}</p>
           </div>
         </div>
         <div>
@@ -39,5 +43,5 @@ export default function HeroPost({
         </div>
       </div>
     </section>
-  )
+  );
 }
