@@ -1,16 +1,16 @@
 ---
-title: "My first test post"
+title: ""
 excerpt: "Here I will be testing my approach to building a statically generated site using NextJs and markdown"
-coverImage: "/assets/blog/first-post/cover.jpeg"
+coverImage: "/assets/blog/test-post/cover.jpeg"
 date: "2022-05-07"
 author:
   name: Steve Jones
   picture: "/assets/blog/authors/steve.png"
 ogImage:
-  url: "/assets/blog/first-post/cover.jpeg"
+  url: "/assets/blog/test-post/cover.jpeg"
 ---
 
-First test post using markdown to build a simple blog site. Goal is to get the site up and running as fast as possible and start putting together some posts to provide some content when applying for jobs
+First test post using markdown to build a simple blog site. Goal is to get the site up and running as fast as possible and start putting together some posts to provide some content that can show off what I know and my experience.
 
 `here is some code, how is this rendered?`
 
