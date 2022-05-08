@@ -16,6 +16,7 @@ export default function PostPreviewGrid({ posts }) {
             author={post.author}
             slug={post.slug}
             excerpt={post.excerpt}
+            category={post.category}
           />
         ))}
       </div>
