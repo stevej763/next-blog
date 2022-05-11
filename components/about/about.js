@@ -12,18 +12,19 @@ export default function About() {
       </p>
       <br />
       <p>
-        At the end of 2020 I secured my current role working for the Department
-        for Work and Pensions. In this role I work as a backend software
-        engineer mainly using Java. Since starting this job, my passion and
-        ability for the subject has grown exponentially. I am always learning
-        something new and always looking to develop myself.
+        At the end of 2020 I secured my first role working as a software
+        developer. In this role I work as a backend software engineer mainly
+        using Java. Since starting this job, my passion and ability for the
+        subject has grown exponentially. I am constantly learning something new
+        and always looking to develop myself.
       </p>
       <br />
       <p>
         That is where this site comes in. While I love to learn new skills and
-        technologies, I have a tendency to move on so quickly that I can forget
-        all the topics I have covered. Here I intend to write about the subjects
-        I enjoy, keeping a log of them and also sharing them with others.
+        technologies, I have been learning about so many concepts and ideas that
+        I can forget all the topics I have covered. Here I intend to write about
+        the subjects I enjoy or find interesting, keeping a log of them, and
+        also sharing them with others.
       </p>
       <br />
       <p>

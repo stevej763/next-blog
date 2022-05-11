@@ -1,14 +1,14 @@
 ---
 title: "SOLID - The single responsibility principle"
 excerpt: "In the first of a series of 5, we take a look at the the first of the five SOLID principles - the single responsibility principle"
-coverImage: "/assets/blog/solid-srp/cover.jpg"
+coverImage: "/assets/blog/oop/solid-srp/cover.jpg"
 date: "2022-05-08"
 category: "OOP"
 author:
   name: Steve Jones
   picture: "/assets/blog/authors/steve.png"
 ogImage:
-  url: "/assets/blog/solid-srp/cover.jpg"
+  url: "/assets/blog/oop/solid-srp/cover.jpg"
 ---
 
 The SOLID principles are nothing new. Introduced by Uncle Bob back in 2000, there are more articles than I can count out there on the topic, not to mention the books by the man himself. However, every post brings a different perspective and it seemed like a good place to start for a series of posts on this website. For this article, I am going to begin with the first of the five principles - The Single Responsibility Principle.
@@ -55,6 +55,7 @@ public class CommandLineInputHandler implements InputHandler {
         userInputService.storeSanitisedText(input);
     }
 }
+
 ```
 
 Following the single responsibility principle, the `InputHandler` does one thing. It passes the string of text onto a `UserInputService`. Exactly what this service does, the `CommandLineInputHandler` does not know or care, it does one job, receives the input, and passes it onto the service.
@@ -77,6 +78,7 @@ public class UserInputService {
         userInputDao.save(sanitisedText);
     }
 }
+
 ```
 
 The service, while having very little complex logic of its own, orchestrates the storage of the text. It requests for the text to be sanitised by the `TextSanitiser`, how this is managed it does not know, but it knows it will receive a string back from the `TextSanitiser`. It then calls the `save()` method on the `UserInputDao` to have the data inserted into the database. Which kind of database the service does not know or care as that is not it's responsibility.
@@ -99,6 +101,7 @@ public void savesTextToDatabase() {
     verify(textSanitiser).sanitise(userInput);
     verify(userInputDao).save(sanitisedText);
 }
+
 ```
 
 First we set up the mocks for the `UserInputDao` and `TextSanitiser`. Then a couple of String variables that we will pass in to the class being tested. We then instantiate a new instance of the service class, passing in the two mocked dependencies as parameters for the constructor, these take the place of the real objects, allowing us to manipulate their behaviour.

@@ -76,7 +76,8 @@
 }
 
 .markdown pre code {
-  color: white
+  color: white;
+  font-size: 0.8rem;
 }
 
 .markdown h2 {
