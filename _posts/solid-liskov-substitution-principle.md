@@ -85,11 +85,11 @@ public class PasswordResetService {
 
 Here we are implanting a use case for the `Sender` by using it as a method of requesting a password reset email to be send to a user. The constructor of the `PasswordResetService` has requested a class of type `Sender` but has correctly been coded to an interface to allow for different implementations of the `Sender` class to be passed in. If we were to pass in either of our above implementations the code would compile and run seemingly without error. However, while the Kafka resource would produce the expected result of sending a request out to an email service to send the password reset email to the user. The Archive resource would result in no message reaching the email service, and so the code would not function as expected.
 
-What the Liskov substitution principle is trying to avoid is cases like this. There is more to conforming an interfaces contract than just implementing the methods. You need to ensure the logic in the classes that implement the interface does not result in unexpect behaviour or different functionality. In this case, all objects of type sender were expected to be able to send a notifcation out to another service in order to perform the next step of the process. However, because the ArchiveResource also implemented the `send()` method it could be successfully passed into the argument at the point our `PasswordResetService` was constructed without error, but unable to perform the task expected of a `Sender`
+What the Liskov substitution principle is trying to avoid is cases like this. There is more to conforming an interfaces contract than just implementing the methods. You need to ensure the logic in the classes that implement the interface does not result in unexpected behaviour or different functionality. In this case, all objects of type sender were expected to be able to send a notification out to another service in order to perform the next step of the process. However, because the ArchiveResource also implemented the `send()` method it could be successfully passed into the argument at the point our `PasswordResetService` was constructed without error, but unable to perform the task expected of a `Sender`
 
 Recap
 
-- Any object of the same parent type should be interchangable
+- Any object of the same parent type should be interchangeable
 - If it looks like a duck and quacks like a duck. Make sure it is definetly a duck
 - Use generic constructors to enable coding to interfaces
 
