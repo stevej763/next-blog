@@ -174,3 +174,9 @@ Recap
 - Make use of inheritance to provide a base level for a class
 - Use composition to extend functionality where possible
 - Broken code is not closed for modification
+
+References
+
+- https://medium.com/@alexandre.malavasi/why-is-the-open-closed-principle-so-important-bed2f2a0d4c7
+- https://reflectoring.io/open-closed-principle-explained/
+- https://www.baeldung.com/java-open-closed-principle
