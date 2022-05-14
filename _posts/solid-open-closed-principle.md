@@ -19,7 +19,7 @@ Meyer introduces the concept with a simple statement: “software entities shoul
 
 In my reading and learning of the topic, The way I first grasped an understanding of the meaning was when thinking of code that you use daily, but that is written by someone else.
 
-Imagine you have a project that depends on an external package managed by another person or team. For example you are building an application that relies on an external API. You rely on this API heavily for your application and it will not work without it. Then one day the developers of that API decide to change some of the API endpoint URL, or even change the structure of the data being sent by the API. Your application starts throwing strange errors and once you figure out it is because of the change to that external API, you now have to rewrite a large chunk of your application to conform to the new data structure you are receiving.
+Imagine you have a project that depends on an external package managed by another person or team. For example you are building an application that relies on an external API. You rely on this API heavily for your application and it will not work without it. Then one day the developers of that API decide to change some of the URLs for their service, or even change the structure of the data being sent by the API. Your application starts throwing strange errors and once you figure out it is because of the change to that external API, you now have to rewrite a large chunk of your application to conform to the new data structure you are receiving.
 
 In this situation the developers behind the API you relied upon were not conforming to the open-closed principle. They had working, production code that users were accessing and they made a change to it. Their API was not closed for modification as it should be.
 
@@ -130,4 +130,47 @@ public class Admin implements User {
 
 ```
 
-There is one exception to the open/closed principle, and that is if you find a bug in existing code. In this case you should make changes to ensure the bug is patched. If the code is not working as expected then you need to make sure it fulfils it's purpose, ensuring you have a have robust set of tests for your code will help with this.
+The final way you can extend functionality is through composition. In most scenarios this is my prefered approach to extented functionality. Let us imagine we hold the previous user objects in an authentication service that other services rely on to retreive user details. As part of an update we want to extend the authentication service to return some additional details when responding to a request for user details - for example, a session ID or access token.
+
+To do this we could edit our abstract interface to require an additional method to return those details, or add the logic into our parent class to be extended. However this would break our rule about modifying existing code. We could extend each of our user types further but this would be a lot of work and potentially be very confusing if we ended up with lots of user types.
+
+By creating a new class, composed of our `User` objects and the newly required fields we avoid both of thsoe issues.
+
+```
+public class UserDetailsResponse {
+
+    private final User user;
+    private final String sessionId;
+    private final LocalDateTime expiryDateTime;
+
+    public UserDetailsResponse(User user, String sessionId, LocalDateTime expiryDateTime) {
+        this.user = user;
+        this.sessionId = sessionId;
+        this.expiryDateTime = expiryDateTime;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public LocalDateTime getExpiryDateTime() {
+        return expiryDateTime;
+    }
+}
+
+```
+
+We now have a new `UserDetailsResponse` object that is composed of our existing object and some additional fields. This approach allows us to extend and append extra detail to our requests without having to change the underlying classes. Whats more, as we are passing in the higher level `User` object, we are able to pass in any class that extends the `User` interface contract (implements the `getUserDetails()` method).
+
+There is one exception to the open/closed principle, and that is if you find a bug in existing code. In this case you should make changes to ensure the bug is patched. If the code is not working as expected then you need to make sure it fulfils it's purpose. Ensuring you have a have robust set of tests for your code will help with this.
+
+Recap
+
+- Avoid changing working code (closed for modification)
+- Make use of inheritance to provide a base level for a class
+- Use composition to extend functionality where possible
+- Broken code is not closed for modification
