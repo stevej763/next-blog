@@ -61,7 +61,6 @@ public class KafkaResource implements Sender<Message> {
 
     public KafkaResource(Producer<String, String> kafkaMessageProducer) {
         this.kafkaMessageProducer = kafkaMessageProducer;
-
     }
 
     @Override
@@ -82,7 +81,7 @@ public class KafkaResource implements Sender<Message> {
 
 This `KafkaResource` conforms to the contract of the interface, it has implemented both the expected methods and will correctly result in the `PasswordResetRequest` being sent out.
 
-Now lets imagine that we wish to switch out Kafka with a different message broker such as RabbitMQ, because we are keeping to the open-closed principle and have seperated out the message sending logic from our `PasswordResetService` through our generic `Sender` argument this should be a simple case of implementing a new sub-class of `Sender` that makes use of the alternative message broker and then passing it into the constructor argument for the `PasswordResetService`.
+Now lets imagine that we wish to switch out Kafka with a different message broker such as RabbitMQ. Because we are keeping to the open-closed principle and have seperated out the message sending logic from our `PasswordResetService` through our generic `Sender` argument, this should be simple. A new sub-class of `Sender` is needed that makes use of the alternative message broker. This `Sender`can then be passed into the constructor argument for the `PasswordResetService`.
 
 ```
 public class RabbitMqResource implements Sender<Message> {
@@ -107,9 +106,9 @@ public class RabbitMqResource implements Sender<Message> {
 
 ```
 
-However, while the `RabbitMqResource` has extended the `Sender` class and implemented the correct methods, the `send()` method for individual messages has not been configured. This means that if we were to pass in this new resource as the `Sender` to the `PasswordResetService` the code would compile correctly, but we would find an error being thrown at runtime when our service attempts to send a `PasswordResetRequest` and our program would no longer work as expected.
+However, while the `RabbitMqResource` has extended the `Sender` class and implemented the correct methods, the `send()` method for individual messages has not been configured. This means that if we were to pass in this new resource as the `Sender` to the `PasswordResetService` the code would compile correctly, but we would find an error being thrown at runtime when our service attempts to send a `PasswordResetRequest`. The program would no longer work as expected.
 
-What the Liskov substitution principle is trying to avoid is cases like this. There is more to conforming to the contract than just implementing the methods. You need to ensure the logic in the classes that implement the interface does not result in unexpected behaviour or different functionality.
+What the Liskov substitution principle is trying to avoid is cases like this. There is more to conforming to the contract of a parent class than just implementing the methods. You need to ensure the logic in the classes that implement the interface does not result in unexpected behaviour or different functionality.
 
 In this case, all objects of type sender were expected to be able to send a notification out to another service in order to perform the next step of a process, but the implementation of our sub-classes did not mirror the behaviour correctly. While we could handle the exception in the service and provide a back-up method of sending the request, this would require editing the service class which should be closed to modification.
 
@@ -122,3 +121,4 @@ Recap
 ## References
 
 - https://stackoverflow.com/questions/56860/what-is-an-example-of-the-liskov-substitution-principle
+- https://www.baeldung.com/java-liskov-substitution-principle
