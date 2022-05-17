@@ -110,7 +110,7 @@ However, while the `RabbitMqResource` has extended the `Sender` class and implem
 
 What the Liskov substitution principle is trying to avoid is cases like this. There is more to conforming to the contract of a parent class than just implementing the methods. You need to ensure the logic in the classes that implement the interface do not result in unexpected behaviour or different functionality.
 
-In this case, all objects of type sender were expected to be able to send a notification out to another service, in order to perform the next step of a process. But, the implementation of our sub-classes did not mirror the behaviour correctly. While we could handle the exception in the service and provide a back-up method of sending the request, this would require editing the service class which should be closed to modification.
+In this case, all objects of type `Sender` were expected to be able to send a message out to another service. But the implementation of our sub-classes did not always mirror the behaviour correctly. While we could handle the exception in the service and provide a back-up method of sending the request, this would require editing the service class which should be closed to modification.
 
 Recap
 

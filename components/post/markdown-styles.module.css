@@ -70,6 +70,7 @@
 }
 
 .markdown pre {
+  border-left: 8px solid green;
   padding: 10px;
   background-color: rgb(58, 58, 58);
   overflow: auto;
